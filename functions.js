@@ -1,28 +1,25 @@
-export function map (mapper, input) {
-  const output = []
-  for (const e of input) {
-    output.push(mapper(e))
-  }
-
-  return output
-}
-
 export function reduce (reducer, input, start = input[0]) {
   let result = start
   for (const e of input) {
-    result = reducer(e, result)
+    result = reducer(result, e)
   }
 
   return result
 }
 
-export function filter (filterer, input) {
-  const output = []
-  for (const e of input) {
-    if (filterer(e)) {
-      output.push(e)
-    }
-  }
+export function map (mapper, input) {
+  return reduce((result, e) => [...result, mapper(e)], input, [])
+}
 
-  return output
+export function filter (filterer, input) {
+  return reduce((result, e) => (
+    filterer(e)
+      ? [...result, e]
+      : result
+  ), input, [])
+}
+
+export function flow (...fns) {
+  return (input) =>
+    reduce((lastResult, fn) => fn(lastResult), fns, input)
 }
