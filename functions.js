@@ -1,6 +1,14 @@
-export function reduce (reducer, input, start = input[0]) {
+function isUndefined(a) {
+  return a === undefined;
+}
+
+export function reduce (reducer, input, start) {
   let result = start
   for (const e of input) {
+    if (isUndefined(result)) {
+      result = e;
+    }
+
     result = reducer(result, e)
   }
 
