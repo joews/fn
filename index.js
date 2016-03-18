@@ -13,4 +13,5 @@ export function autoPartial (argCount, fn) {
 export const map = autoPartial(2, fn.map)
 export const reduce = autoPartial(2, fn.reduce)
 export const filter = autoPartial(2, fn.filter)
+export const take = autoPartial(2, fn.take)
 export const flow = fn.flow
