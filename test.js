@@ -1,15 +1,13 @@
-import { map, reduce, filter, flow, take } from './'
+import { map, reduce, filter, flow, take, toArray } from './'
 
-const a = [1, 2, 3, 4, 5]
+const arr = [1, 2, 3, 4, 5]
 
-// bounded iterable
-function * g () {
-  for (const i of a) {
+function * bounded () {
+  for (const i of arr) {
     yield i
   }
 }
 
-// unbounded iterable
 function * infinite () {
   let i = 0
   while (1) {
@@ -17,24 +15,15 @@ function * infinite () {
   }
 }
 
-const x2 = map((x) => x * 2)
-const odd = filter((x) => x % 2)
-const sum = reduce((a, e) => a + e)
-const oddDoubleSum = flow(odd, x2, sum)
-const take3 = take(3)
-const sumOfFirst100 = flow(take(100), sum)
+const sum = reduce((sum, e) => e + sum)
+const x3 = map((x) => x * 3)
+const isEven = filter((x) => x % 2 === 1)
+const first1k = take(1000)
 
-console.log(x2(a))
-console.log(x2(g()))
-console.log(odd(a))
-console.log(odd(g()))
-console.log(sum(a))
-console.log(sum(g()))
-console.log(map((e) => e * 3, a))
-console.log(map((e) => e * 3, g()))
-console.log(oddDoubleSum(a))
-console.log(oddDoubleSum(g()))
-console.log(take3(a))
-console.log(take3(g()))
-console.log(take3(infinite()))
-console.log(sumOfFirst100(infinite()))
+const combo = flow(x3, isEven, first1k)
+const comboSum = flow(combo, sum)
+const comboArray = flow(combo, toArray)
+
+console.log([...take(10, combo(infinite()))]) // don't log all 1k!
+console.log(comboSum(infinite()))
+console.log(comboArray(bounded()))
