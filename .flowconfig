@@ -1,0 +1,7 @@
+[ignore]
+# ignore flow-annotated test files in dependencies
+.*/node_modules/babel-.*
+.*/node_modules/esformatter/*
+# ignore JSON fiels except package.json: https://github.com/facebook/flow/issues/1420
+.*/node_modules/.*[^e]\.json$
+.*/node_modules/.*\(lib\|test\).*\.json$

@@ -1,3 +1,5 @@
+// @flow
+
 //
 // Values
 //
@@ -8,7 +10,7 @@ function isUndefined (a) {
 //
 // Iterables
 //
-export function reduce (reducer, input, start) {
+export function reduce (reducer: Function, input: Iterable, start: any): any {
   let result = start
   for (const e of input) {
     if (isUndefined(result)) {
@@ -21,13 +23,13 @@ export function reduce (reducer, input, start) {
   return result
 }
 
-export function * map (mapper, input) {
+export function * map (mapper: Function, input: Iterable): Iterable {
   for (const e of input) {
     yield mapper(e)
   }
 }
 
-export function * filter (filterer, input) {
+export function * filter (filterer: Function, input: Iterable): Iterable {
   for (const e of input) {
     if (filterer(e)) {
       yield e
@@ -35,7 +37,7 @@ export function * filter (filterer, input) {
   }
 }
 
-export function * take (n, input) {
+export function * take (n: number, input: Iterable): Iterable {
   let outputCount = 0
   for (const e of input) {
     yield e
@@ -45,19 +47,21 @@ export function * take (n, input) {
   }
 }
 
-export function toArray (input) {
+// FIXME input should be Iterable
+// Blocked on https://github.com/facebook/flow/issues/1059
+export function toArray (input: any): Array<any> {
   return [...input]
 }
 
 //
 // Functions
 //
-export function flow (...fns) {
+export function flow (...fns: Array<Function>): Function {
   return (input) => reduce((lastResult, fn) => fn(lastResult), fns, input)
 }
 
-export function autoPartial (argCount, fn) {
-  return function (...args) {
+export function autoPartial (argCount: number, fn: Function): Function {
+  return function (...args: Array<any>) {
     if (args.length >= argCount) {
       return fn(...args)
     } else {
