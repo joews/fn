@@ -47,10 +47,9 @@ export function * take (n: number, input: Iterable): Iterable {
   }
 }
 
-// FIXME input should be Iterable
-// Blocked on https://github.com/facebook/flow/issues/1059
-export function toArray (input: any): Array<any> {
-  return [...input]
+export function toArray (input: Iterable): Array<any> {
+  // flow flags [...input] as a type error because of https://github.com/facebook/flow/issues/1059
+  return Array.from(input)
 }
 
 //
@@ -61,12 +60,25 @@ export function flow (...fns: Array<Function>): Function {
 }
 
 export function autoPartial (argCount: number, fn: Function): Function {
-  return function (...args: Array<any>) {
+  return function (...args) {
     if (args.length >= argCount) {
-      return fn(...args)
+      return fn.call(this, ...args)
     } else {
       return fn.bind(this, ...args)
     }
   }
 }
 
+// type checking on autoPartial doesn't work because we lose the 
+//  specifics of the types passed to the inner function.
+// In the same way, types can't be checked here:
+function call(fn: Function, arg: any) {
+  fn(arg);
+}
+
+function a(x: number) {
+  console.log(x * 2);
+}
+
+// a(10);
+// call(a, "20");
