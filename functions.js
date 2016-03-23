@@ -49,11 +49,30 @@ export function toArray (input) {
   return [...input]
 }
 
+export function head (input) {
+  return [...take(1, input)][0]
+}
+
+export function * tail (input) {
+  let isFirst = true
+  for (const e of input) {
+    if (isFirst) {
+      isFirst = false
+    } else {
+      yield e
+    }
+  }
+}
+
 //
 // Functions
 //
 export function flow (...fns) {
   return (input) => reduce((lastResult, fn) => fn(lastResult), fns, input)
+}
+
+export function pipe (value, ...fns) {
+  return flow(...fns)(value)
 }
 
 export function autoPartial (argCount, fn) {
