@@ -9,6 +9,8 @@ export const take = autoPartial(2, fn.take)
 export const toArray = fn.toArray
 export const head = fn.head
 export const tail = fn.tail
+export const split = autoPartial(2, fn.split)
+export const splitWhen = autoPartial(2, fn.splitWhen)
 
 // Functions
 export const flow = fn.flow

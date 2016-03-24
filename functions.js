@@ -64,6 +64,28 @@ export function * tail (input) {
   }
 }
 
+export function * splitWhen (predicate, input) {
+  let nextBatch = []
+
+  for (const e of input) {
+    nextBatch.push(e)
+
+    if (predicate(e, nextBatch)) {
+      yield nextBatch
+      nextBatch = []
+    }
+  }
+
+  if (nextBatch.length > 0) {
+    yield nextBatch
+  }
+}
+
+export function split (batchSize, input) {
+  const splitter = (_, batch) => batch.length >= batchSize
+  return splitWhen(splitter, input)
+}
+
 //
 // Functions
 //
@@ -84,4 +106,3 @@ export function autoPartial (argCount, fn) {
     }
   }
 }
-
