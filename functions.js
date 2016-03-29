@@ -1,8 +1,12 @@
 //
 // Values
 //
-function isUndefined (a) {
-  return a === undefined
+export function isUndefined (a) {
+  return typeof a === 'undefined'
+}
+
+export function isPromise (a) {
+  return a instanceof Promise
 }
 
 //
@@ -105,4 +109,26 @@ export function autoPartial (argCount, fn) {
       return fn.bind(this, ...args)
     }
   }
+}
+
+//
+// Promises
+//
+
+// Returns a lazy async thunk that resolves to `value` after at least `delayInMs`
+export function delay (delayInMs) {
+  return (value) => new Promise((resolve) => {
+    setTimeout(() => resolve(value), delayInMs)
+  })
+}
+
+export function flowAsync (...fns) {
+  return (input) => reduce((lastPromise, fn) => lastPromise.then(fn),
+    fns,
+    Promise.resolve(input)
+  )
+}
+
+export function pipeAsync (value, ...fns) {
+  return flowAsync(...fns)(value)
 }

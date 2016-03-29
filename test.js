@@ -1,4 +1,4 @@
-import { map, reduce, filter, flow, take, toArray, pipe, head, tail, split, splitWhen } from './'
+import { map, reduce, filter, flow, take, toArray, pipe, head, tail, split, splitWhen, delay, flowAsync, pipeAsync } from './'
 
 const arr = [1, 2, 3, 4, 5]
 
@@ -15,8 +15,13 @@ function * infinite () {
   }
 }
 
-function log (...args) {
-  console.log(...args)
+function log (msg) {
+  console.log(msg)
+  return msg
+}
+
+function logThunk (msg) {
+  return () => log(msg)
 }
 
 const logIterable = flow(toArray, log)
@@ -34,6 +39,7 @@ const wonkySplit = splitWhen((e, batch) => (e < 10)
 const combo = flow(x3, isEven, first1k)
 const comboSum = flow(combo, sum)
 const comboArray = flow(combo, toArray)
+const comboAsync = flowAsync(comboArray, delay(750), log)
 
 log([...take(10, combo(infinite()))]) // don't log all 1k!
 log(comboSum(infinite()))
@@ -46,3 +52,7 @@ pipe(bounded(), tail, tail, tail, tail, tail, logIterable)
 
 pipe(new Set([1, 1, 2, 3, 5]), pairs, logIterable)
 pipe(infinite(), take(15), wonkySplit, logIterable)
+
+delay(1000)('delay 1').then(log)
+pipeAsync(bounded(), take(2), delay(500), logIterable, logThunk('before delay'), delay(500), logThunk('after delay'))
+pipeAsync(bounded(), comboAsync, delay(750), logThunk('nested async flows done'))

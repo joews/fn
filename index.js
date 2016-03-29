@@ -1,6 +1,10 @@
 import * as fn from './functions'
 const { autoPartial } = fn
 
+// Values
+export const isUndefined = fn.isUndefined
+export const isPromise = fn.isPromise
+
 // Iterable
 export const reduce = autoPartial(2, fn.reduce)
 export const map = autoPartial(2, fn.map)
@@ -15,3 +19,8 @@ export const splitWhen = autoPartial(2, fn.splitWhen)
 // Functions
 export const flow = fn.flow
 export const pipe = fn.pipe
+
+// Promises
+export const delay = fn.delay
+export const flowAsync = fn.flowAsync
+export const pipeAsync = fn.pipeAsync
