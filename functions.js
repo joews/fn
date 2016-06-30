@@ -90,6 +90,16 @@ export function split (batchSize, input) {
   return splitWhen(splitter, input)
 }
 
+// Returns an iterable that yields values from each input iterable
+// TODO
+export function * merge (...iterables) {
+  for (const iterable of iterables) {
+    for (const e of iterable) {
+      yield e
+    }
+  }
+}
+
 //
 // Functions
 //
@@ -101,9 +111,9 @@ export function pipe (value, ...fns) {
   return flow(...fns)(value)
 }
 
-export function autoPartial (argCount, fn) {
+export function autoPartial (fn) {
   return function (...args) {
-    if (args.length >= argCount) {
+    if (args.length >= fn.length) {
       return fn(...args)
     } else {
       return fn.bind(this, ...args)

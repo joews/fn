@@ -6,15 +6,15 @@ export const isUndefined = fn.isUndefined
 export const isPromise = fn.isPromise
 
 // Iterable
-export const reduce = autoPartial(2, fn.reduce)
-export const map = autoPartial(2, fn.map)
-export const filter = autoPartial(2, fn.filter)
-export const take = autoPartial(2, fn.take)
+export const reduce = autoPartial(fn.reduce)
+export const map = autoPartial(fn.map)
+export const filter = autoPartial(fn.filter)
+export const take = autoPartial(fn.take)
 export const toArray = fn.toArray
 export const head = fn.head
 export const tail = fn.tail
-export const split = autoPartial(2, fn.split)
-export const splitWhen = autoPartial(2, fn.splitWhen)
+export const split = autoPartial(fn.split)
+export const splitWhen = autoPartial(fn.splitWhen)
 
 // Functions
 export const flow = fn.flow
