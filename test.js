@@ -1,4 +1,5 @@
-import { map, reduce, filter, flow, take, toArray, pipe, head, tail, split, splitWhen, delay, flowAsync, pipeAsync } from './'
+import * as fn from '.'
+Object.assign(global, fn);
 
 const arr = [1, 2, 3, 4, 5]
 
