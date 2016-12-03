@@ -58,4 +58,5 @@ delay(1000)('delay 1').then(log)
 pipeAsync(bounded(), take(2), delay(500), logIterable, logThunk('before delay'), delay(500), logThunk('after delay'))
 pipeAsync(bounded(), comboAsync, delay(750), logThunk('nested async flows done'))
 
+pipe([1, [2, 3], [4, [5, [6,7]]], 8], flattenDeep, logIterable)
 pipe([1, [2, 3], [4, [5, [6,7]]], 8], flatten, logIterable)

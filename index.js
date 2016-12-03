@@ -127,8 +127,22 @@ export const merge = _(function * merge (...iterables) {
   }
 })
 
-// Returns an iterable that yields each nested descendant of `iterable`
+// Returns an iterable that yields each grandchild of `iterable`
+// [[a, b, c], [d, [e]]] -> [a, b, c, d, [e]]
 export function * flatten (iterable) {
+  for (const child of iterable) {
+    if (isIterable(child)) {
+      for (const grandchild of child) {
+        yield grandchild
+      }
+    } else {
+      yield child
+    }
+  }
+}
+
+// Returns an iterable that yields each nested descendant of `iterable`
+export function * flattenDeep (iterable) {
   for (const child of iterable) {
     if (isIterable(child)) {
       for (const grandchild of flatten(child)) {
