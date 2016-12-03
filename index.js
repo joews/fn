@@ -32,6 +32,14 @@ export function isPromise (a) {
   return a instanceof Promise
 }
 
+export function isFunction (a) {
+  return typeof a === 'function'
+}
+
+export function isIterable (a) {
+  return isFunction(a[Symbol.iterator])
+}
+
 //
 // Iterables
 //
@@ -118,6 +126,19 @@ export const merge = _(function * merge (...iterables) {
     }
   }
 })
+
+// Returns an iterable that yields each nested descendant of `iterable`
+export function * flatten (iterable) {
+  for (const child of iterable) {
+    if (isIterable(child)) {
+      for (const grandchild of flatten(child)) {
+        yield grandchild
+      }
+    } else {
+      yield child
+    }
+  }
+}
 
 //
 // Promises
