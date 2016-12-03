@@ -11,10 +11,10 @@ export function autoPartial (fn) {
   }
 }
 
-const _ = autoPartial;
+const _ = autoPartial
 
 export function flow (...fns) {
-  return (input) => reduce((lastResult, fn) => fn(lastResult), fns, input)
+  return (input) => reduce((lastResult, fn) => fn(lastResult), input, fns)
 }
 
 export const pipe = _(function pipe (value, ...fns) {
@@ -35,13 +35,9 @@ export function isPromise (a) {
 //
 // Iterables
 //
-export const reduce = _(function reduce (reducer, input, start) {
+export const reduce = _(function reduce (reducer, start, input) {
   let result = start
   for (const e of input) {
-    if (isUndefined(result)) {
-      result = e
-    }
-
     result = reducer(result, e)
   }
 
@@ -106,7 +102,7 @@ export const splitWhen = _(function * splitWhen (predicate, input) {
   if (nextBatch.length > 0) {
     yield nextBatch
   }
-});
+})
 
 export const split = _(function split (batchSize, input) {
   const splitter = (_, batch) => batch.length >= batchSize
@@ -123,7 +119,6 @@ export const merge = _(function * merge (...iterables) {
   }
 })
 
-
 //
 // Promises
 //
@@ -137,8 +132,8 @@ export function delay (delayInMs) {
 
 export function flowAsync (...fns) {
   return (input) => reduce((lastPromise, fn) => lastPromise.then(fn),
-    fns,
-    Promise.resolve(input)
+    Promise.resolve(input),
+    fns
   )
 }
 

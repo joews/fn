@@ -27,7 +27,7 @@ function logThunk (msg) {
 
 const logIterable = flow(toArray, log)
 
-const sum = reduce((sum, e) => e + sum)
+const sum = reduce((sum, e) => e + sum, 0)
 const x3 = map((x) => x * 3)
 const isEven = filter((x) => x % 2 === 1)
 const first1k = take(1000)
